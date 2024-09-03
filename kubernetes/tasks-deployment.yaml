@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tasks-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tasks
+  template:
+    metadata:
+      labels:
+        app: tasks
+    spec:
+      containers:
+        - name: tasks
+          image: varun542v/kub-demo-tasks:latest
+          env:
+            - name: AUTH_ADDRESS
+              valueFrom:
+                configMapKeyRef:
+                  name: tasks-config
+                  key: AUTH_ADDRESS
+            - name: TASKS_FOLDER
+              valueFrom:
+                configMapKeyRef:
+                  name: tasks-config
+                  key: TASKS_FOLDER
